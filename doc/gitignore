@@ -1,9 +1,0 @@
-#alps project ignore
-
-#忽略所有的.class结尾的文件
-*.class
-.*
-
-#忽略根目录下的bin和target目录
-/bin/**/*
-/target/**/*
