@@ -4,12 +4,16 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dsg.alps.dao.ArticleDao;
 import com.dsg.alps.model.Article;
+import com.dsg.alps.util.SystemConstant;
 
 @Service
 // 设置默认的事务管理策略，即没有标注@Transactional的方法的事务处理方式，意思为不要求方法必须在一个事务中运行
@@ -43,6 +47,7 @@ public class ArticleService {
 		return pArticle;
 
 	}
+
 	/**
 	 * 
 	 * @param article
@@ -52,7 +57,7 @@ public class ArticleService {
 	 * @date Mar 23, 2013 4:28:44 PM
 	 */
 	@Transactional(readOnly = false)
-	public Article update(Article article){
+	public Article update(Article article) {
 		article.setUpdatedTime(new Date());
 		Article pArticle = articleDao.save(article);
 		return pArticle;
@@ -79,5 +84,31 @@ public class ArticleService {
 	 */
 	public List<Article> findAll() {
 		return (List<Article>) articleDao.findAll();
+	}
+
+	/**
+	 * 
+	 * @param offset
+	 * @param pageSize
+	 * @return
+	 * @description 不带任何查询条件的分页
+	 * @author Simon.Cong(modoucc@gmail.com)
+	 * @date Mar 24, 2013 2:01:14 AM
+	 */
+	public Page<Article> findArticles(int offset, int pageSize) {
+		Pageable pagealbe = new PageRequest(offset/pageSize, pageSize);
+		return articleDao.findAll(pagealbe);
+	}
+
+	/**
+	 * 
+	 * @param offset
+	 * @return
+	 * @description 不带任何查询条件的分页，采用page中定义的每页条数
+	 * @author Simon.Cong(modoucc@gmail.com)
+	 * @date Mar 24, 2013 2:01:32 AM
+	 */
+	public Page<Article> findArticles(int offset) {
+		return findArticles(offset, SystemConstant.SIZE_PER_PAGE);
 	}
 }

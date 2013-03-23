@@ -1,12 +1,13 @@
 package com.dsg.alps.controller;
 
-import java.util.List;
-
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,8 +32,14 @@ public class ArticleController {
 	private ArticleService articleService;
 
 	@RequestMapping("list")
-	public String index(Model model) {
-		List<Article> articles = articleService.findAll();
+	public String index(HttpServletRequest request, Model model) {
+		String pageOffset = request.getParameter("pager.offset");
+		int offset = 0;
+		if (!StringUtils.isEmpty(pageOffset)) {
+			offset = Integer.parseInt(pageOffset);
+		}
+		Page<Article> articles = articleService.findArticles(offset,3);
+		System.out.println(articles.getTotalElements());
 		model.addAttribute("articles", articles);
 		return "article/list";
 	}
