@@ -21,7 +21,7 @@ import com.dsg.alps.model.Account;
 public interface AccountDao extends CrudRepository<Account, Long> {
 	
 	@Modifying
-	@Query("update User u set u.mobile = ?1 where u.passport = ?2") 
+	@Query("update Account a set a.mobile = ?1 where a.passport = ?2") 
 	int modifyMobileByPassport(String Mobile, String passport);
 
 	Account findByPassport(String passport);
