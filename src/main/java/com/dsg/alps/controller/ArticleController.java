@@ -39,7 +39,6 @@ public class ArticleController {
 			offset = Integer.parseInt(pageOffset);
 		}
 		Page<Article> articles = articleService.findArticles(offset,3);
-		System.out.println(articles.getTotalElements());
 		model.addAttribute("articles", articles);
 		return "article/list";
 	}

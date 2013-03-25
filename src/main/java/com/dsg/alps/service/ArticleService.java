@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,8 +98,9 @@ public class ArticleService {
 	 * @date Mar 24, 2013 2:01:14 AM
 	 */
 	public Page<Article> findArticles(int offset, int pageSize) {
-		Pageable pagealbe = new PageRequest(offset/pageSize, pageSize);
-		return articleDao.findAll(pagealbe);
+//		Pageable pageable = new PageRequest(offset/pageSize, pageSize);
+		Pageable pageable = new PageRequest(offset/pageSize, pageSize, new Sort(Direction.DESC, "updatedTime"));
+		return articleDao.findAll(pageable);
 	}
 
 	/**
